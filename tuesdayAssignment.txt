@@ -1,0 +1,96 @@
+1) Price should be greater than either 799 or RAM is greater than 12
+db.products1.find({
+    $or: [
+        { price: { $gt: 799 } },
+        { "spec.ram": { $gt: 12 } }
+    ]
+})
+2) Find products that do not have "white" as a color and are priced below 800
+db.products1.find({
+    color: { $nin: ["white"] },
+    price: { $lt: 800 }
+})
+3) Select products with either blue color and storage not less than 128
+db.products1.find({
+    color: "blue",
+    storage: { $gte: 128 }
+})
+4) Print the name and date of product whose RAM is neither 4 nor the product price is
+db.products1.find({
+    $and: [
+        { "spec.ram": { $ne: 4 } },
+        { price: { $gte: 799 } }
+    ]
+}, {
+    name: 1,
+    releaseDate: 1
+})
+5) Print the names of products whose screen is either greater than 7 or color is white
+db.products1.find({
+    $or: [
+        { "spec.screen": { $gt: 7 } },
+        { color: "white" }
+    ]
+}, {
+    name: 1
+})
+6) Print the name, screen size, and color of products whose color does not include gold
+db.products1.find({
+    color: { $nin: ["gold"] }
+}, {
+    name: 1,
+    "spec.screen": 1,
+    color: 1
+})
+7) Find products that have either "white" or "black" as a color option and are priced below 800
+db.products1.find({
+    $or: [
+        { color: "white" },
+        { color: "black" }
+    ],
+    price: { $lt: 800 }
+})
+8) Find products that do not have "gold" as a color and are priced below 700 or have a storage option of 512GB
+db.products1.find({
+    color: { $nin: ["gold"] },
+    $or: [
+        { price: { $lt: 700 } },
+        { storage: 512 }
+    ]
+})
+9) Find products that have both a RAM size greater than 8GB and a CPU speed less than 2 GHz, or do not have a storage option of 256GB
+db.products1.find({
+    $or: [
+        {
+            $and: [
+                { "spec.ram": { $gt: 8 } },
+                { "spec.cpu": { $lt: 2 } }
+            ]
+        },
+        { storage: { $nin: [256] } }
+    ]
+})
+10) Find name, price, storage if price is 699 or storage is 1024
+db.products1.find({
+    $or: [
+        { price: 699 },
+        { storage: 1024 }
+    ]
+}, {
+    name: 1,
+    price: 1,
+    storage: 1
+})
+11) Find the product where CPU is not less than 3, and release date is not "2011-09-01"
+db.products1.find({
+    "spec.cpu": { $not: { $lt: 3 } },
+    releaseDate: { $not: { $eq: ISODate("2011-09-01") } }
+})
+
+12) Find the product where no color is blue and price is not 899
+db.products1.find({
+    $nor: [
+        { color: "blue" },
+        { price: 899 }
+    ]
+})
